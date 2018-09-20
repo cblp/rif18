@@ -192,9 +192,37 @@ norm point = case point of
 	Point2D x y -> sqrt (square x + square y)
 ```
 
+### ограничения (свойства типа)
+
+```haskell
+λ> :info +
+class Num a where
+  (+) :: a -> a -> a
+  ...
+	-- Defined in ‘GHC.Num’
+infixl 6 +
+
+λ> :info Num
+class Num a where
+  (+) :: a -> a -> a
+  (-) :: a -> a -> a
+  (*) :: a -> a -> a
+  negate :: a -> a
+  abs :: a -> a
+  signum :: a -> a
+  fromInteger :: Integer -> a
+  {-# MINIMAL (+), (*), abs, signum, fromInteger, (negate | (-)) #-}
+	-- Defined in ‘GHC.Num’
+instance Num Word -- Defined in ‘GHC.Num’
+instance Num Integer -- Defined in ‘GHC.Num’
+instance Num Int -- Defined in ‘GHC.Num’
+instance Num Float -- Defined in ‘GHC.Float’
+instance Num Double -- Defined in ‘GHC.Float’
+```
+
 ## Тип-сумма
 
-### (вариант [variant], объединение [union], альтернатива)
+### (вариант [variant], объединение [union], тип-альтернатива)
 
 ```haskell
 data Bool = False | True
@@ -291,7 +319,7 @@ case cmd of
 	...
     CmdServe -> cmdServe _ ui
     ...
-    
+
 Main.hs:144:30: error:
     • Found hole: _ :: Storage.Handle
     • In the first argument of ‘cmdServe’, namely ‘_’
@@ -316,8 +344,6 @@ Main.hs:144:30: error:
 144 |         CmdServe -> cmdServe _ ui
     |                              ^
 ```
-
-
 
 # Безопасное программирование в Haskell
 
@@ -373,6 +399,8 @@ main = do
     print y2  -- 4294836225
 ```
 
+## Тип выражает контракт
+
 ## `NULL` — ошибка на миллиард долларов
 
 - https://en.wikipedia.org/wiki/Tony_Hoare
@@ -397,7 +425,7 @@ char * join(void ** from, const char * separator) {
 join :: collection t -> String -> String
 ```
 
-В языке просто нет `null` и нет способа вернуть его из функции.
+В языке просто нет `null` и нет способа вернуть его из функции. Функция обязана вернуть `String`.
 
 ### Альтернатива `NULL` — Maybe
 
@@ -405,7 +433,7 @@ join :: collection t -> String -> String
 lookup :: key -> Map key value -> Maybe value
 
 case lookup "ex" ample of
-	Nothing -> _  
+	Nothing -> _
 		-- нет способа получить несуществующее значение
 	Just value -> _
 		-- обязан проверить результат, чтобы извлечь значение
@@ -442,3 +470,24 @@ a.hs:5:24: error: [-Wincomplete-patterns, -Werror=incomplete-patterns]
   |                        ^^^^^^^^^^^^...
 ```
 
+## Чистый язык
+
+```haskell
+import Data.Time
+fromGregorian :: Integer -> Int -> Int -> Day
+getCurrentTime :: IO UTCTime
+
+
+
+import Control.Concurrent.STM
+atomically :: STM a -> IO a
+
+atomically $ do
+	x <- readTChan ch1
+	writeTChan ch2 x
+	print x  -- error:
+			 -- Couldn't match expected type ‘STM a’
+			 --             with actual type ‘IO ()’
+```
+
+# практика
