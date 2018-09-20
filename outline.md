@@ -8,11 +8,17 @@
 
    - `brew install haskell-stack`
 
-2. https://github.com/cblp/rif18
+2. Дополнительные инструменты
+
+   ```sh
+   $ stack install yesod-bin
+   ```
+
+3. https://github.com/cblp/rif18
 
    ```sh
    $ git clone https://github.com/cblp/rif18.git
-   $ cd rif18
+   $ cd rif18/webserver
    $ stack build
    ```
 
@@ -347,7 +353,7 @@ Main.hs:144:30: error:
 
 # Безопасное программирование в Haskell
 
-## Сильная типизация
+## 1. Сильная типизация
 
 ```c++
 // g++ -Wall -Wextra -Werror -pedantic
@@ -399,7 +405,7 @@ main = do
     print y2  -- 4294836225
 ```
 
-## Тип выражает контракт
+## 2. Тип выражает контракт
 
 ## `NULL` — ошибка на миллиард долларов
 
@@ -488,6 +494,12 @@ atomically $ do
 	print x  -- error:
 			 -- Couldn't match expected type ‘STM a’
 			 --             with actual type ‘IO ()’
+```
+
+## 3. Тип пишет код
+
+```
+
 ```
 
 # практика
