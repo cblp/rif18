@@ -277,12 +277,47 @@ main = do
 ## Выведение типов (в обе стороны)
 
 ```haskell
-λ> 3 ^^ 9 * 3 ^^ (-9)
+λ> 1 / 3^9 * 3^9
     0.9999999999999999
 
-λ> 3 ^^ 9 * 3 ^^ (-9) :: Rational
+λ> 1 / 3^9 * 3^9 :: Rational
     1 % 1
 ```
+
+### Подсказки от компилятора
+
+```haskell
+case cmd of
+	...
+    CmdServe -> cmdServe _ ui
+    ...
+    
+Main.hs:144:30: error:
+    • Found hole: _ :: Storage.Handle
+    • In the first argument of ‘cmdServe’, namely ‘_’
+      In the expression: cmdServe _ ui
+      In a case alternative: CmdServe -> cmdServe _ ui
+    • Relevant bindings include
+        today :: Day (bound at Main.hs:120:5)
+        brief :: Bool (bound at Main.hs:119:23)
+        cmd :: CmdAction (bound at Main.hs:119:19)
+        ui :: ConfigUI (bound at Main.hs:119:16)
+        h :: Storage.Handle (bound at Main.hs:119:14)
+        runCmdAction :: Storage.Handle
+                        -> ConfigUI -> CmdAction -> Bool -> Storage ()
+          (bound at Main.hs:119:1)
+      Valid substitutions include
+        undefined :: forall (a :: TYPE r).
+                      GHC.Stack.Types.HasCallStack =>
+                      a
+          (imported from ‘Prelude’ at Main.hs:7:8-11
+            (and originally defined in ‘GHC.Err’))
+    |
+144 |         CmdServe -> cmdServe _ ui
+    |                              ^
+```
+
+
 
 # Безопасное программирование в Haskell
 
@@ -338,7 +373,45 @@ main = do
     print y2  -- 4294836225
 ```
 
-## Исчерпание образцов (exhastive patterns)
+## `NULL` — ошибка на миллиард долларов
+
+- https://en.wikipedia.org/wiki/Tony_Hoare
+
+Пример сигнатуры функции на Java:
+
+```java
+public static <T> String join(Collection<T> from, String separator) {
+```
+
+Она может вернуть `null`? Легко!
+
+Аналог на C:
+
+```c
+char * join(void ** from, const char * separator) {
+```
+
+Аналог на Haskell:
+
+```haskell
+join :: collection t -> String -> String
+```
+
+В языке просто нет `null` и нет способа вернуть его из функции.
+
+### Альтернатива `NULL` — Maybe
+
+```haskell
+lookup :: key -> Map key value -> Maybe value
+
+case lookup "ex" ample of
+	Nothing -> _  
+		-- нет способа получить несуществующее значение
+	Just value -> _
+		-- обязан проверить результат, чтобы извлечь значение
+```
+
+## Проверка исчерпания образцов (exhaustive patterns)
 
 ```haskell
 data Lang = En | Ru
@@ -368,3 +441,4 @@ a.hs:5:24: error: [-Wincomplete-patterns, -Werror=incomplete-patterns]
 5 | loginButtonText lang = case lang of
   |                        ^^^^^^^^^^^^...
 ```
+
