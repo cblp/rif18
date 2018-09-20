@@ -13,6 +13,7 @@
    ```sh
    $ git clone https://github.com/cblp/rif18.git
    $ cd rif18
+   $ stack build
    ```
 
 
@@ -55,7 +56,7 @@
 
 1. λ-исчисление
 2. λ-абстракция (безымянная функция как выражение)
-3. Параметрический полиморфизм (дженерики)
+3. Параметрический полиморфизм (generics)
 4. Функциональное программирование
 5. Языки семейства ML (SML, OCaml, Haskell, Rust, ReasonML)
 6. Haskell
@@ -73,17 +74,29 @@
 
 ```
 x
+
 y
+
+
 
 sin
 
+
+
 +
+
 *
 
+
+
 <<<
+
 >=>
 
+
+
 integral
+
 ∫
 ```
 
@@ -91,13 +104,19 @@ integral
 
 ```haskell
 (f x)
+
 ((f x) y)
+
 (((f x) y) z)
+
 ...
 
 
+
 (f (g x))
+
 (f (g (h x)))
+
 ...
 ```
 
@@ -105,7 +124,9 @@ integral
 
 ```haskell
 square x = mul x x
+
 square y = mul y y
+
 ...
 ```
 
@@ -117,25 +138,38 @@ square y = mul y y
 
 ```haskell
 f x
+
 f x y
+
 f x y z
+
+
 
 2 + 2 * 2
 
+
+
 sqrt (square x + square y)
+
+
 
 HTTP.post (server ++ path) body
 
+
+
 	f(x, y)  g(z)
+
 
 
 	│╰──┬─╯  │╰┬╯
 функция 1    2 3
 ```
 
-### определение функции
+### определение констант и функций
 
 ```haskell
+π = 3.1415926
+
 norm (x, y) = sqrt (square x + square y)
 ```
 
@@ -187,26 +221,36 @@ case lookup key dict of
 -- (стандартная библиотека base)
 data Maybe a = Nothing | Just a
 
+
+
 -- | Универсальная сумма
 -- (стандартная библиотека base)
 data Either a b = Left a | Right b
 
+
+
 -- | Связный список
 -- (аналог [a] из стандартной библиотеки base)
 data List a = Nil | Cons a (List a)
+
+
 
 -- | Двоичное дерево
 data BinTree a = Empty | Node (Tree a) a (Tree a)
 
 singletonTree x = Node Empty x Empty
 
+
+
 -- | Просто дерево
 -- (стандартная библиотека containers, модуль Data.Tree)
 data Tree a = Node a (Forest a)
-type Forest a = [Tree a]
+type Forest a = [Tree a]  -- синоним типа (как `typedef` в С)
 ```
 
 ## `do`-нотация
+
+### (императивный стиль)
 
 ```haskell
 main = do
@@ -220,7 +264,9 @@ main = do
 norm :: (Double, Double) -> Double
 norm (x, y) = sqrt (square x + square y)
 
+
 lookup :: k -> Map k v -> Maybe v
+
 
 main :: IO ()
 main = do
@@ -228,4 +274,97 @@ main = do
 	print ("Hello " ++ name)
 ```
 
+## Выведение типов (в обе стороны)
+
+```haskell
+λ> 3 ^^ 9 * 3 ^^ (-9)
+    0.9999999999999999
+
+λ> 3 ^^ 9 * 3 ^^ (-9) :: Rational
+    1 % 1
+```
+
 # Безопасное программирование в Haskell
+
+## Сильная типизация
+
+```c++
+// g++ -Wall -Wextra -Werror -pedantic
+
+#include <cstdlib>
+#include <iostream>
+using namespace std;
+
+int main() {
+    uint16_t x = 65535;
+    cout << x << endl;  // 65535
+
+    uint64_t y = x * x;
+    cout << y << endl;  // 18446744073709420545
+
+    return 0;
+}
+```
+
+```haskell
+import Data.Word
+
+main = do
+    let x = 65535 :: Word16
+    print x
+    -- 65535
+
+    let y = x * x :: Word64
+    {-
+    a.hs:8:13: error:
+        • Couldn't match expected type ‘Word64’ with actual type ‘Word16’
+        • In the expression: x * x :: Word64
+          In an equation for ‘y’: y = x * x :: Word64
+          In the expression:
+            do let x = ...
+               print x
+               let y = ...
+               print y
+               ....
+      |
+    8 |     let y = x * x :: Word64
+      |             ^^^^^
+    -}
+
+    let y1 = fromIntegral (x * x) :: Word64
+    print y1  -- 1
+
+    let y2 = fromIntegral x * fromIntegral x :: Word64
+    print y2  -- 4294836225
+```
+
+## Исчерпание образцов (exhastive patterns)
+
+```haskell
+data Lang = En | Ru
+
+loginButtonText lang = case lang of
+	En -> "Log in"
+	Ru -> "Войти"
+```
+
+Добавляем новый язык
+
+```haskell
+data Lang = En | Fr | Ru
+
+loginButtonText lang = case lang of
+	En -> "Log in"
+	Ru -> "Войти"
+```
+
+Ошибка!
+
+```haskell
+a.hs:5:24: error: [-Wincomplete-patterns, -Werror=incomplete-patterns]
+    Pattern match(es) are non-exhaustive
+    In a case alternative: Patterns not matched: Fr
+  |
+5 | loginButtonText lang = case lang of
+  |                        ^^^^^^^^^^^^...
+```
