@@ -28,13 +28,7 @@ getHomeR = do
     (formWidget, formEnctype) <- generateFormPost sampleForm
     let submission = Nothing :: Maybe FileForm
         handlerName = "getHomeR" :: Text
-    allComments <- runDB getAllComments
-
-    defaultLayout $ do
-        let (commentFormId, commentTextareaId, commentListId) = commentIds
-        aDomId <- newIdent
-        setTitle "Welcome To Yesod!"
-        $(widgetFile "homepage")
+    homeLayout handlerName formEnctype formWidget submission
 
 postHomeR :: Handler Html
 postHomeR = do
@@ -43,8 +37,11 @@ postHomeR = do
         submission = case result of
             FormSuccess res -> Just res
             _ -> Nothing
-    allComments <- runDB getAllComments
+    homeLayout handlerName formEnctype formWidget submission
 
+homeLayout :: Text -> Enctype -> Widget -> Maybe FileForm -> Handler Html
+homeLayout handlerName formEnctype formWidget submission = do
+    allComments <- runDB getAllComments
     defaultLayout $ do
         let (commentFormId, commentTextareaId, commentListId) = commentIds
         aDomId <- newIdent

@@ -128,10 +128,7 @@ warpSettings foundation =
 -- | For yesod devel, return the Warp settings and WAI Application.
 getApplicationDev :: IO (Settings, Application)
 getApplicationDev = do
-    settings <- getAppSettings
-    foundation <- makeFoundation settings
-    wsettings <- getDevSettings $ warpSettings foundation
-    app <- makeApplication foundation
+    (wsettings, _, app) <- getApplication'
     return (wsettings, app)
 
 getAppSettings :: IO AppSettings
@@ -167,10 +164,7 @@ appMain = do
 --------------------------------------------------------------
 getApplicationRepl :: IO (Int, App, Application)
 getApplicationRepl = do
-    settings <- getAppSettings
-    foundation <- makeFoundation settings
-    wsettings <- getDevSettings $ warpSettings foundation
-    app1 <- makeApplication foundation
+    (wsettings, foundation, app1) <- getApplication'
     return (getPort wsettings, foundation, app1)
 
 shutdownApp :: App -> IO ()
@@ -188,3 +182,11 @@ handler h = getAppSettings >>= makeFoundation >>= flip unsafeHandler h
 -- | Run DB queries
 db :: ReaderT SqlBackend Handler a -> IO a
 db = handler . runDB
+
+getApplication' :: IO (Settings, App, Application)
+getApplication' = do
+    settings <- getAppSettings
+    foundation <- makeFoundation settings
+    wsettings <- getDevSettings $ warpSettings foundation
+    app <- makeApplication foundation
+    return (wsettings, foundation, app)
