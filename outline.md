@@ -1,10 +1,10 @@
 # Лаборатория Касперского и Haskell
 
-Вопросы можно задавать с места в любое время.
+Вопросы можно задавать с места в любое время. Ссылка на этот документ — **[bit.ly/rif-18](https://bit.ly/rif-18)**.
 
-## Начало
+## Подготовка
 
-1. Установить `stack` по инструкции https://haskellstack.org
+1. Установить **`stack`** по инструкции **[haskellstack.org](https://haskellstack.org)**
 
    - `brew install haskell-stack`
 
@@ -14,7 +14,7 @@
    stack install yesod-bin
    ```
 
-3. Забрать и собрать демо https://github.com/cblp/rif18
+3. Забрать и собрать демо [github.com/**cblp/rif18**](https://github.com/cblp/rif18)
 
    ```sh
    git clone https://github.com/cblp/rif18.git
@@ -23,7 +23,7 @@
    stack exec webserver
    ```
 
-4. Потыкать палочкой http://localhost:3000
+4. Потыкать палочкой [localhost:3000](http://localhost:3000)
 
 
 ## Обо мне
@@ -36,9 +36,9 @@
 
 ## RuHaskell
 
-1. https://ruhaskell.org
+1. [**RuHaskell**.org](https://ruhaskell.org)
 
-2. https://t.me/haskellru, @haskellru
+2. [t.me/**haskellru**](https://t.me/haskellru)
 
 ## Что мы делаем в ЛК
 
@@ -49,7 +49,7 @@
 
 ### Kaspersky OS
 
-1. https://os.kaspersky.com
+1. [**os**.kaspersky.com](https://os.kaspersky.com)
 2. Микроядро
 3. Интеграция KSS
 4. Гипервизор
@@ -59,16 +59,20 @@
 1. Сначала был С++
 2. Haskell проще
 3. Haskell безопаснее
-4. Развитый инструментарий для парсеров, компиляторов, кодогенерации
+4. Развитый инструментарий для разработки
+5. Библиотеки для парсеров, компиляторов, кодогенерации
 
 ## Опрос аудитории. Знаете ли вы _?
 
 1. λ-исчисление
 2. λ-абстракция (безымянная функция как выражение)
-3. Параметрический полиморфизм (generics)
-4. Функциональное программирование
-5. Языки семейства ML (SML, OCaml, Haskell, Rust, ReasonML)
-6. Haskell
+3. Тип (в языках программирования)
+4. Параметрический полиморфизм (generics)
+5. Функциональное программирование
+6. Языки семейства Lisp — CL, Clojure, Scheme [Guile, Racket]
+7. Языки семейства ML — F#, Haskell, ISWYM, OCaml [ReasonML], Rust, StandardML
+8. Языки с мощной поддержкой ФП — все перечисленные + Scala
+9. Haskell
 
 ## Что хотите вынести сегодня?
 
@@ -180,8 +184,9 @@ HTTP.post (server ++ path) body
 π = 3.1415926
 
 norm (x, y) = sqrt (square x + square y)
-```
 
+isPalindrome xs = xs == reverse xs
+```
 ### определение типа
 
 ```haskell
@@ -288,28 +293,70 @@ main = do
 ```haskell
 λ> :info +
 class Num a where
-  (+) :: a -> a -> a
-  ...
+	(+) :: a -> a -> a
+	...
 	-- Defined in ‘GHC.Num’
 infixl 6 +
 
 λ> :info Num
 class Num a where
-  (+) :: a -> a -> a
-  (-) :: a -> a -> a
-  (*) :: a -> a -> a
-  negate :: a -> a
-  abs :: a -> a
-  signum :: a -> a
-  fromInteger :: Integer -> a
+	(+) :: a -> a -> a
+	(-) :: a -> a -> a
+	(*) :: a -> a -> a
+	negate :: a -> a
+	abs :: a -> a
+	signum :: a -> a
+	fromInteger :: Integer -> a
 	-- Defined in ‘GHC.Num’
 instance Num Word -- Defined in ‘GHC.Num’
 instance Num Integer -- Defined in ‘GHC.Num’
 instance Num Int -- Defined in ‘GHC.Num’
 instance Num Float -- Defined in ‘GHC.Float’
 instance Num Double -- Defined in ‘GHC.Float’
+```
 
-encode :: ToJSON a => a -> ByteString
+#### объявление класса (свойства)
+
+```haskell
+class ИмяКласса переменнаяТипа where
+	объявленияМетодов
+```
+
+пример
+
+```haskell
+class Eq a where
+	(==) :: a -> a -> Bool
+	(/=) :: a -> a -> Bool
+```
+
+#### объявление принадлежности типа классу
+
+```haskell
+instance ИмяКласса КонкретныйТип where
+	реализацииМетодов
+```
+
+примеры в выводе `:info`
+
+```haskell
+instance Eq Int
+instance Eq Float
+instance Eq Double
+instance Eq Char
+instance Eq Bool
+```
+
+пример определения
+
+```haskell
+instance
+	(Eq a, Eq b) =>  -- ограничения
+	Eq (a, b)        -- «голова»
+	where
+
+	(a1, b1) == (a2, b2) = a1 == a2 && b1 == b2
+    (a1, b1) /= (a2, b2) = a1 /= a2 || b1 /= b2
 ```
 
 ## Выведение типов (в обе стороны)
@@ -377,7 +424,7 @@ int main() {
 }
 ```
 
-Try it!
+Проверим-ка! (файл «`weaktypes.cpp`»)
 
 ```haskell
 import Data.Word
@@ -390,7 +437,8 @@ main = do
     let y = x * x :: Word64
     {-
     a.hs:8:13: error:
-        • Couldn't match expected type ‘Word64’ with actual type ‘Word16’
+        • Couldn't match expected type ‘Word64’
+                      with actual type ‘Word16’
         • In the expression: x * x :: Word64
           In an equation for ‘y’: y = x * x :: Word64
           In the expression:
