@@ -4,23 +4,26 @@
 
 ## Начало
 
-1. https://haskellstack.org/
+1. Установить `stack` по инструкции https://haskellstack.org
 
    - `brew install haskell-stack`
 
-2. Дополнительные инструменты
+2. Установить дополнительные инструменты (не обязательно)
 
    ```sh
-   $ stack install yesod-bin
+   stack install yesod-bin
    ```
 
-3. https://github.com/cblp/rif18
+3. Забрать и собрать демо https://github.com/cblp/rif18
 
    ```sh
-   $ git clone https://github.com/cblp/rif18.git
-   $ cd rif18/webserver
-   $ stack build
+   git clone https://github.com/cblp/rif18.git
+   cd rif18/webserver
+   stack build
+   stack exec webserver
    ```
+
+4. Потыкать палочкой http://localhost:3000
 
 
 ## Обо мне
@@ -198,34 +201,6 @@ norm point = case point of
 	Point2D x y -> sqrt (square x + square y)
 ```
 
-### ограничения (свойства типа)
-
-```haskell
-λ> :info +
-class Num a where
-  (+) :: a -> a -> a
-  ...
-	-- Defined in ‘GHC.Num’
-infixl 6 +
-
-λ> :info Num
-class Num a where
-  (+) :: a -> a -> a
-  (-) :: a -> a -> a
-  (*) :: a -> a -> a
-  negate :: a -> a
-  abs :: a -> a
-  signum :: a -> a
-  fromInteger :: Integer -> a
-  {-# MINIMAL (+), (*), abs, signum, fromInteger, (negate | (-)) #-}
-	-- Defined in ‘GHC.Num’
-instance Num Word -- Defined in ‘GHC.Num’
-instance Num Integer -- Defined in ‘GHC.Num’
-instance Num Int -- Defined in ‘GHC.Num’
-instance Num Float -- Defined in ‘GHC.Float’
-instance Num Double -- Defined in ‘GHC.Float’
-```
-
 ## Тип-сумма
 
 ### (вариант [variant], объединение [union], тип-альтернатива)
@@ -304,8 +279,37 @@ lookup :: k -> Map k v -> Maybe v
 
 main :: IO ()
 main = do
-	name <- getLine  -- почти присваивание
+	name <- getLine
 	print ("Hello " ++ name)
+```
+
+### ограничения (свойства типа)
+
+```haskell
+λ> :info +
+class Num a where
+  (+) :: a -> a -> a
+  ...
+	-- Defined in ‘GHC.Num’
+infixl 6 +
+
+λ> :info Num
+class Num a where
+  (+) :: a -> a -> a
+  (-) :: a -> a -> a
+  (*) :: a -> a -> a
+  negate :: a -> a
+  abs :: a -> a
+  signum :: a -> a
+  fromInteger :: Integer -> a
+	-- Defined in ‘GHC.Num’
+instance Num Word -- Defined in ‘GHC.Num’
+instance Num Integer -- Defined in ‘GHC.Num’
+instance Num Int -- Defined in ‘GHC.Num’
+instance Num Float -- Defined in ‘GHC.Float’
+instance Num Double -- Defined in ‘GHC.Float’
+
+encode :: ToJSON a => a -> ByteString
 ```
 
 ## Выведение типов (в обе стороны)
@@ -367,11 +371,13 @@ int main() {
     cout << x << endl;  // 65535
 
     uint64_t y = x * x;
-    cout << y << endl;  // 18446744073709420545
+    cout << y << endl;  // ?
 
     return 0;
 }
 ```
+
+Try it!
 
 ```haskell
 import Data.Word
@@ -405,7 +411,7 @@ main = do
     print y2  -- 4294836225
 ```
 
-## 2. Тип выражает контракт
+## 2. Типы выражают контракты
 
 ## `NULL` — ошибка на миллиард долларов
 
@@ -496,10 +502,32 @@ atomically $ do
 			 --             with actual type ‘IO ()’
 ```
 
-## 3. Тип пишет код
+## 3. Типы пишут код
 
+```haskell
+data Person = Person 
+	{ name    :: Text
+	, age     :: Int
+	, address :: [Text]
+	}
+	deriving (Show, Eq, Generic, FromJSON, ToJSON)
+
+λ> putStrLn $ encode Person{name = "Yuri", age = 33, address = ["Moscow","Russia"]}
+{"age":33,"address":["Moscow","Russia"],"name":"Yuri"}
+
+encode :: ToJSON a => a -> ByteString
+
+decode       :: FromJSON a => ByteString -> Maybe a
+eitherDecode :: FromJSON a => ByteString -> Either String a
 ```
 
+### Типы пишут тесты
+
+```haskell
+deriving instance Arbitrary Person
+
+λ> quickCheck $ \person@Person{age} -> validate person ==> age > 0
++++ OK, passed 100 tests.
 ```
 
 # практика
