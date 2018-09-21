@@ -442,7 +442,12 @@ join :: collection t -> String -> String
 ### Альтернатива `NULL` — Maybe
 
 ```haskell
-lookup :: key -> Map key value -> Maybe value
+data Maybe a = Nothing | Just a
+
+lookup ::
+	key ->
+	Map key value ->  -- ^ словарь с ключами типа key и значенями типа value
+	Maybe value
 
 case lookup "ex" ample of
 	Nothing -> _
