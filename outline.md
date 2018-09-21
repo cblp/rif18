@@ -190,7 +190,7 @@ isPalindrome xs = xs == reverse xs
 ### определение типа
 
 ```haskell
-data TypeName = ConstructorName ValueTypes...
+data Тип = Конструктор Тип₁ Тип₂ ...
 
 data Point2D = Point2D Double Double
 
@@ -279,7 +279,7 @@ norm :: (Double, Double) -> Double
 norm (x, y) = sqrt (square x + square y)
 
 
-lookup :: k -> Map k v -> Maybe v
+lookup :: key -> Map key value -> Maybe value
 
 
 main :: IO ()
