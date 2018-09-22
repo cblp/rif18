@@ -468,7 +468,8 @@ main = do
 Пример сигнатуры функции на Java:
 
 ```java
-public static <T> String join(Collection<T> from, String separator) {
+public static <T> String join(Collection<T> from,
+                              String separator)
 ```
 
 Она может вернуть `null`? Легко!
@@ -476,7 +477,7 @@ public static <T> String join(Collection<T> from, String separator) {
 Аналог на C:
 
 ```c
-char * join(void ** from, const char * separator) {
+char * join(const void ** from, const char * separator)
 ```
 
 Аналог на Haskell:
@@ -494,7 +495,8 @@ data Maybe a = Nothing | Just a
 
 lookup ::
 	key ->
-	Map key value ->  -- ^ словарь с ключами типа key и значенями типа value
+	Map key value ->  -- ^ словарь с ключами типа key
+					  -- и значенями типа value
 	Maybe value
 
 case lookup "ex" ample of
@@ -577,6 +579,11 @@ eitherDecode :: FromJSON a => ByteString -> Either String a
 ### Типы пишут тесты
 
 ```haskell
+λ> quickCheck $ \xs -> reverse (reverse xs) == xs
++++ OK, passed 100 tests.
+
+
+
 deriving instance Arbitrary Person
 
 λ> quickCheck $ \person@Person{age} -> validate person ==> age > 0
