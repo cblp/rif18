@@ -85,28 +85,28 @@
 
 ## переменная
 
-```
+```haskell
 x
 
 y
 
-
+--
 
 sin
 
-
+--
 
 +
 
 *
 
-
+--
 
 <<<
 
 >=>
 
-
+--
 
 integral
 
@@ -124,7 +124,7 @@ integral
 
 ...
 
-
+--
 
 (f (g x))
 
@@ -156,26 +156,32 @@ f x y
 
 f x y z
 
-
+--
 
 2 + 2 * 2
 
-
+--
 
 sqrt (square x + square y)
 
-
+--
 
 HTTP.post (server ++ path) body
 
+--
 
+   f(x, y)  g(z)
 
-	f(x, y)  g(z)
+--
 
+   │ ╰──┬─╯ │ │
+функция 1   2 3
 
+--
 
-	│╰──┬─╯  │╰┬╯
-функция 1    2 3
+       ╭───────────────1───────────────╮ ╭2─╮
+filter (\c -> elem (toUpper c) "ABCDEF") word
+                   ╰────1────╯ ╰──2───╯
 ```
 
 ### определение констант и функций
@@ -192,9 +198,39 @@ isPalindrome xs = xs == reverse xs
 ```haskell
 data Тип = Конструктор Тип₁ Тип₂ ...
 
+--
+
 data Point2D = Point2D Double Double
 
+Point2D   0    0  :: Point2D
+Point2D  10   20  :: Point2D
+Point2D (-1) (-2) :: Point2D
+
+--
+
 data Point3D = Point3D Double Double Double
+
+Point3D 1 2 3 :: Point3D
+```
+
+### синоним типа (type alias)
+
+(как `typedef` в С)
+
+```haskell
+type Имя = Тип
+
+--
+
+type Age = Int
+
+let age = 42 :: Int
+age :: Age
+
+type String = [Char]
+("РИФ" :: String) == ['Р', 'И', 'Ф' :: Char]
+
+type ParserState = (Position, Input)
 ```
 
 ### сопоставление с образцом (pattern matching)
@@ -235,31 +271,39 @@ case lookup key dict of
 -- (стандартная библиотека base)
 data Maybe a = Nothing | Just a
 
-
+--
 
 -- | Универсальная сумма
 -- (стандартная библиотека base)
 data Either a b = Left a | Right b
 
-
+--
 
 -- | Связный список
 -- (аналог [a] из стандартной библиотеки base)
 data List a = Nil | Cons a (List a)
 
+--
 
+⁉️
+
+--
 
 -- | Двоичное дерево
 data BinTree a = Empty | Node (Tree a) a (Tree a)
 
 singletonTree x = Node Empty x Empty
 
-
+--
 
 -- | Просто дерево
 -- (стандартная библиотека containers, модуль Data.Tree)
 data Tree a = Node a (Forest a)
-type Forest a = [Tree a]  -- синоним типа (как `typedef` в С)
+type Forest a = [Tree a]
+
+--
+
+⁉️
 ```
 
 ## `do`-нотация
@@ -278,9 +322,11 @@ main = do
 norm :: (Double, Double) -> Double
 norm (x, y) = sqrt (square x + square y)
 
+--
 
 lookup :: key -> Map key value -> Maybe value
 
+--
 
 main :: IO ()
 main = do
@@ -315,50 +361,6 @@ instance Num Float -- Defined in ‘GHC.Float’
 instance Num Double -- Defined in ‘GHC.Float’
 ```
 
-#### объявление класса (свойства)
-
-```haskell
-class ИмяКласса переменнаяТипа where
-	объявленияМетодов
-```
-
-пример
-
-```haskell
-class Eq a where
-	(==) :: a -> a -> Bool
-	(/=) :: a -> a -> Bool
-```
-
-#### объявление принадлежности типа классу
-
-```haskell
-instance ИмяКласса КонкретныйТип where
-	реализацииМетодов
-```
-
-примеры в выводе `:info`
-
-```haskell
-instance Eq Int
-instance Eq Float
-instance Eq Double
-instance Eq Char
-instance Eq Bool
-```
-
-пример определения
-
-```haskell
-instance
-	(Eq a, Eq b) =>  -- ограничения
-	Eq (a, b)        -- «голова»
-	where
-
-	(a1, b1) == (a2, b2) = a1 == a2 && b1 == b2
-    (a1, b1) /= (a2, b2) = a1 /= a2 || b1 /= b2
-```
-
 ## Выведение типов (в обе стороны)
 
 ```haskell
@@ -388,13 +390,12 @@ Main.hs:144:30: error:
         cmd :: CmdAction (bound at Main.hs:119:19)
         ui :: ConfigUI (bound at Main.hs:119:16)
         h :: Storage.Handle (bound at Main.hs:119:14)
-        runCmdAction :: Storage.Handle
-                        -> ConfigUI -> CmdAction -> Bool -> Storage ()
+        runCmdAction :: Storage.Handle -> ConfigUI ->
+                        CmdAction -> Bool -> Storage ()
           (bound at Main.hs:119:1)
       Valid substitutions include
         undefined :: forall (a :: TYPE r).
-                      GHC.Stack.Types.HasCallStack =>
-                      a
+                     GHC.Stack.Types.HasCallStack => a
           (imported from ‘Prelude’ at Main.hs:7:8-11
             (and originally defined in ‘GHC.Err’))
     |
@@ -544,7 +545,7 @@ import Data.Time
 fromGregorian :: Integer -> Int -> Int -> Day
 getCurrentTime :: IO UTCTime
 
-
+--
 
 import Control.Concurrent.STM
 atomically :: STM a -> IO a
@@ -582,7 +583,7 @@ eitherDecode :: FromJSON a => ByteString -> Either String a
 λ> quickCheck $ \xs -> reverse (reverse xs) == xs
 +++ OK, passed 100 tests.
 
-
+--
 
 deriving instance Arbitrary Person
 
