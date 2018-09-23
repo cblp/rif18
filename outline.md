@@ -145,7 +145,7 @@ square y = mul y y
 
 # Haskell
 
-## Синтаксис
+## Базовый синтаксис
 
 ### аппликация
 
@@ -193,6 +193,12 @@ norm (x, y) = sqrt (square x + square y)
 
 isPalindrome xs = xs == reverse xs
 ```
+## Типы
+
+```haskell
+значение :: тип
+```
+
 ### определение типа
 
 ```haskell
@@ -233,21 +239,18 @@ type String = [Char]
 type ParserState = (Position, Input)
 ```
 
-### сопоставление с образцом (pattern matching)
-
-```haskell
-norm (Point2D x y) = sqrt (square x + square y)
-
-norm point = case point of
-	Point2D x y -> sqrt (square x + square y)
-```
-
 ## Тип-сумма
 
 ### (вариант [variant], объединение [union], тип-альтернатива)
 
 ```haskell
+data Тип = Конструктор₁ Типы...
+         | Конструктор₂ Типы...
+         | ...
+
 data Bool = False | True
+-- False :: Bool
+-- True  :: Bool
 
 -- | Извлекает значение по ключу из словаря
 lookup key dict = ...
@@ -258,6 +261,8 @@ case found of
 	False -> handleError  -- но что в value?
 	
 data LookupResult = Found Value | NotFound
+-- Found 34 :: LookupResult
+-- NotFound :: LookupResult
 
 case lookup key dict of
 	Found value -> use value    -- value только здесь
@@ -319,12 +324,22 @@ main = do
 ## Сигнатуры типов
 
 ```haskell
+x :: a
+f :: a -> b
+f :: a -> b -> c
+f :: a -> b -> c -> d
+
+--
+
 norm :: (Double, Double) -> Double
 norm (x, y) = sqrt (square x + square y)
 
 --
 
-lookup :: key -> Map key value -> Maybe value
+lookup ::
+    key ->
+    Map key value ->
+    Maybe value
 
 --
 
