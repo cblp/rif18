@@ -9,8 +9,7 @@
                 Read the Book
 
 <div .container>
-    <!-- Starting
-        ================================================== -->
+    <!-- Starting ========================================================== -->
     <div .bs-docs-section>
         <div .row>
             <div .col-lg-12>
@@ -55,8 +54,7 @@
 
     <hr>
 
-    <!-- Forms
-        ================================================== -->
+    <!-- Forms ============================================================= -->
     <div .bs-docs-section>
         <div .row>
             <div .col-lg-12>
@@ -90,8 +88,7 @@
 
     <hr>
 
-    <!-- JSON
-        ================================================== -->
+    <!-- JSON ============================================================== -->
     <div .bs-docs-section>
         <div .row>
             <div .col-lg-12>
@@ -115,27 +112,26 @@
                         <button .btn.btn-primary type=submit>
                            Create comment
 
-           <div .col-lg-4.col-lg-offset-1>
-               <div .bs-callout.bs-callout-info>
-                   <small>
-                       Your comments will appear here. You can also open the
-                       console log to see the raw response from the server.
-                   <ul ##{commentListId}>
-                       $forall comment <- allComments
-                           <li>#{commentMessage $ entityVal comment}
+            <div .col-lg-4.col-lg-offset-1>
+                <div .bs-callout.bs-callout-info>
+                    <small>
+                        Your comments will appear here. You can also open the
+                        console log to see the raw response from the server.
+                    <ul ##{commentListId}>
+                        $forall comment <- allComments
+                            <li>#{commentMessage $ entityVal comment}
 
     <hr>
 
-    <!-- Testing
-       ================================================== -->
+    <!-- Testing =========================================================== -->
     <div .bs-docs-section>
-       <div .row>
-           <div .col-lg-12>
-               <div .page-header>
-                   <h1 #test>Testing
+        <div .row>
+            <div .col-lg-12>
+                <div .page-header>
+                    <h1 #test>Testing
 
-                   <p>
-                       And last but not least, Testing. In <tt>test/Spec.hs</tt> you will find a #
-                       test suite that performs tests on this page.
-                   <p>
-                       You can run your tests by doing: <code>stack test</code>
+                    <p>
+                        And last but not least, Testing. In <tt>test/Spec.hs</tt> you will find a #
+                        test suite that performs tests on this page.
+                    <p>
+                        You can run your tests by doing: <code>stack test</code>
