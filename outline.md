@@ -36,6 +36,9 @@
 2. Яндекс, 4 года, Python, С++...
 3. Лаборатория Касперского, 2,5 года, Haskell, C...
 
+[cblp.su](http://cblp.su)
+[@cblp_su](https://twitter.com/cblp_su)
+
 ## Сообщество RuHaskell
 
 1. [**RuHaskell**.org](https://ruhaskell.org)
@@ -366,6 +369,14 @@ main = do
 ### ограничения (constraints, свойства типа)
 
 ```haskell
+λ> 2 + 2
+    4
+
+λ> 2.0 + 2.0
+    4.0
+
+--
+
 λ> :info +
 class Num a where
 	(+) :: a -> a -> a
@@ -632,11 +643,32 @@ deriving instance Arbitrary Person
 +++ OK, passed 100 tests.
 ```
 
+### Легко создавать типы ad hoc
+
+```haskell
+createSymLink :: FilePath -> FilePath -> IO ()
+
+createSymLink "link_name"   "target_file"
+createSymLink "target_file" "link_name"
+
+
+--
+
+newtype LinkName = LinkName FilePath
+
+newtype TargetFile = TargetFile FilePath
+
+createSymLink :: TargetFile -> LinkName -> IO ()
+
+createSymLink (LinkName "name") (TargetFile "target_file")
+```
+
 # Почему Haskell безопасный?
 
 1. Кодирование контрактов в типах позволяет программе продолжать работать при рефакторинге.
-2. Чистота защищает от нежелательных побочных эффектов, сохраняя логику.
-3. Богатые возможности для построения абстракций и управления сложностью.
+2. Легко создавать типы, легко описывать логику и контракты на типах.
+3. Чистота защищает от нежелательных побочных эффектов, сохраняя логику.
+4. Богатые возможности для построения абстракций и управления сложностью.
 
 # практика
 
