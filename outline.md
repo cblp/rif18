@@ -6,7 +6,9 @@
 
 1. Установить **`stack`** по инструкции **[haskellstack.org](https://haskellstack.org)**
 
-   - `brew install haskell-stack`
+   ```sh
+   brew install haskell-stack
+   ```
 
 2. Установить дополнительные инструменты (не обязательно)
 
@@ -42,18 +44,29 @@
 
 ## Что мы делаем в ЛК
 
-### Kaspersky Security System (KSS)
+### [**os**.kaspersky.com](https://os.kaspersky.com)&nbsp;— Kaspersky&nbsp;Security&nbsp;System&nbsp;(KSS), KasperskyOS, Kaspersky&nbsp;Secure&nbsp;Hypervisor, Kaspersky&nbsp;IoT&nbsp;Secure&nbsp;Gateway
 
-1. Язык описания конфигурации безопасности
+#### Kaspersky Security System (KSS)
+
+1. Язык описания конфигурации безопасности, неполный по Тьюрингу язык с системой типов
+   - Компилятор в С
+   - Инструментарий разработчика
 2. Реализация конкретных моделей безопасности (со своими языками)
+   - Плагины к основному компилятору
 
-### KasperskyOS
-
-[**os**.kaspersky.com](https://os.kaspersky.com)
+#### KasperskyOS
 
 1. Микроядро
 2. Интеграция KSS
-3. Гипервизор
+3. Каждый процесс — домен безопасности
+
+#### KSS on Linux
+
+Домен безопасности — Linux container.
+
+#### Kaspersky&nbsp;Secure&nbsp;Hypervisor
+
+Фактически KOS, но внутри процессов запущены паравиртуалки с Windows, Linux и т. п.
 
 ### Почему мы выбрали Haskell
 
@@ -587,15 +600,17 @@ atomically $ do
 ## 3. Типы пишут код
 
 ```haskell
-data Person = Person 
-	{ name    :: Text
-	, age     :: Int
-	, address :: [Text]
+data Person =
+	Person{
+		name    :: Text,
+		age     :: Int,
+		address :: [Text]
 	}
 	deriving (Show, Eq, Generic, FromJSON, ToJSON)
 
-λ> putStrLn $ encode Person{name = "Yuri", age = 33, address = ["Moscow","Russia"]}
-{"age":33,"address":["Moscow","Russia"],"name":"Yuri"}
+λ> me = Person{name = "Yuri", age = 33, address = ["Moscow","Russia"]}
+λ> putStrLn $ encode me
+{"address":["Moscow","Russia"],"age":33,"name":"Yuri"}
 
 encode :: ToJSON a => a -> ByteString
 
@@ -618,3 +633,13 @@ deriving instance Arbitrary Person
 ```
 
 # практика
+
+# .
+
+# .
+
+# .
+
+1. Экранирование HTML в комментариях
+2. Работа с базой данных
+   1. `NOT NULL`
