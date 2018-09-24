@@ -28,13 +28,13 @@
 
 ## Обо мне
 
-Юрий Сыровецкий, старший разработчик
+Юрий Сыровецкий, старший разработчик/эксперт
 
 1. НИИ, 5 лет, С++
 2. Яндекс, 4 года, Python, С++...
 3. Лаборатория Касперского, 2,5 года, Haskell, C...
 
-## RuHaskell
+## Сообщество RuHaskell
 
 1. [**RuHaskell**.org](https://ruhaskell.org)
 
@@ -47,12 +47,13 @@
 1. Язык описания конфигурации безопасности
 2. Реализация конкретных моделей безопасности (со своими языками)
 
-### Kaspersky OS
+### KasperskyOS
 
-1. [**os**.kaspersky.com](https://os.kaspersky.com)
-2. Микроядро
-3. Интеграция KSS
-4. Гипервизор
+[**os**.kaspersky.com](https://os.kaspersky.com)
+
+1. Микроядро
+2. Интеграция KSS
+3. Гипервизор
 
 ### Почему мы выбрали Haskell
 
@@ -69,8 +70,8 @@
 3. Тип (в языках программирования)
 4. Параметрический полиморфизм (generics)
 5. Функциональное программирование
-6. Языки семейства Lisp — CL, Clojure, Scheme [Guile, Racket]
-7. Языки семейства ML — F#, Haskell, ISWYM, OCaml [ReasonML], Rust, StandardML
+6. Языки семейства Lisp — CL, Clojure, Scheme (Guile, Racket)
+7. Языки семейства ML — F#, Haskell, ISWYM, OCaml (ReasonML), Rust, StandardML
 8. Языки с мощной поддержкой ФП — все перечисленные + Scala
 9. Haskell
 
@@ -349,7 +350,7 @@ main = do
 	print ("Hello " ++ name)
 ```
 
-### ограничения (свойства типа)
+### ограничения (constraints, свойства типа)
 
 ```haskell
 λ> :info +
@@ -374,6 +375,13 @@ instance Num Integer -- Defined in ‘GHC.Num’
 instance Num Int -- Defined in ‘GHC.Num’
 instance Num Float -- Defined in ‘GHC.Float’
 instance Num Double -- Defined in ‘GHC.Float’
+
+--
+
+import Data.Aeson
+
+encode :: ToJSON a => a -> ByteString
+decode :: FromJSON a => ByteString -> Maybe a
 ```
 
 ## Выведение типов (в обе стороны)
@@ -479,7 +487,7 @@ main = do
 
 ## `NULL` — ошибка на миллиард долларов
 
-- https://en.wikipedia.org/wiki/Tony_Hoare
+- [en.wikipedia.org/wiki/**Tony_Hoare**](https://en.wikipedia.org/wiki/Tony_Hoare)
 
 Пример сигнатуры функции на Java:
 
@@ -527,19 +535,22 @@ case lookup "ex" ample of
 ```haskell
 data Lang = En | Ru
 
-loginButtonText lang = case lang of
-	En -> "Log in"
-	Ru -> "Войти"
+loginButtonText lang =
+    case lang of
+        En -> "Log in"
+        Ru -> "Войти"
 ```
 
 Добавляем новый язык
 
 ```haskell
 data Lang = En | Fr | Ru
+---------------- ^^
 
-loginButtonText lang = case lang of
-	En -> "Log in"
-	Ru -> "Войти"
+loginButtonText lang =
+    case lang of
+        En -> "Log in"
+        Ru -> "Войти"
 ```
 
 Ошибка!
