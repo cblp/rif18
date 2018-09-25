@@ -11,12 +11,12 @@
 
         <div #navbar .collapse.navbar-collapse>
             <ul .nav.navbar-nav>
-                $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
+                $forall MenuItem label route _ <- navbarLeftVisibleMenuItems
                     <li :Just route == mcurrentRoute:.active>
                         <a href="@{route}">#{label}
 
             <ul .nav.navbar-nav.navbar-right>
-                $forall MenuItem label route _ <- navbarRightFilteredMenuItems
+                $forall MenuItem label route _ <- navbarRightVisibleMenuItems
                     <li :Just route == mcurrentRoute:.active>
                         <a href="@{route}">#{label}
 
@@ -32,7 +32,7 @@
             <li .active>#{title}
 
     $maybe msg <- mmsg
-      <div .alert.alert-info #message>#{msg}
+        <div .alert.alert-info #message>#{msg}
 
 
 $if (Just HomeR == mcurrentRoute)

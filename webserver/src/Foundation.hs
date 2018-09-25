@@ -41,7 +41,7 @@ data App = App
 data MenuItem = MenuItem
     { menuItemLabel :: Text
     , menuItemRoute :: Route App
-    , menuItemAccessCallback :: Bool
+    , menuItemShowWhen :: Bool
     }
 
 data MenuTypes
@@ -66,8 +66,7 @@ mkYesodData "App" $(parseRoutesFile "config/routes")
 type Form x = Html -> MForm (HandlerFor App) (FormResult x, Widget)
 
 -- | A convenient synonym for database access functions.
-type DB a = forall (m :: * -> *).
-    (MonadIO m) => ReaderT SqlBackend m a
+type DB a = forall (m :: * -> *). MonadIO m => ReaderT SqlBackend m a
 
 -- Please see the documentation for the Yesod typeclass. There are a number
 -- of settings which can be configured by overriding methods here.
@@ -112,30 +111,32 @@ instance Yesod App where
                 [ NavbarLeft $ MenuItem
                     { menuItemLabel = "Home"
                     , menuItemRoute = HomeR
-                    , menuItemAccessCallback = True
+                    , menuItemShowWhen = True
                     }
                 , NavbarLeft $ MenuItem
                     { menuItemLabel = "Profile"
                     , menuItemRoute = ProfileR
-                    , menuItemAccessCallback = isJust muser
+                    , menuItemShowWhen = isJust muser
                     }
                 , NavbarRight $ MenuItem
                     { menuItemLabel = "Login"
                     , menuItemRoute = AuthR LoginR
-                    , menuItemAccessCallback = isNothing muser
+                    , menuItemShowWhen = isNothing muser
                     }
                 , NavbarRight $ MenuItem
                     { menuItemLabel = "Logout"
                     , menuItemRoute = AuthR LogoutR
-                    , menuItemAccessCallback = isJust muser
+                    , menuItemShowWhen = isJust muser
                     }
                 ]
 
-        let navbarLeftMenuItems = [x | NavbarLeft x <- menuItems]
-        let navbarRightMenuItems = [x | NavbarRight x <- menuItems]
+        let navbarLeftMenuItems  = [x | NavbarLeft  x <- menuItems]
+            navbarRightMenuItems = [x | NavbarRight x <- menuItems]
 
-        let navbarLeftFilteredMenuItems = [x | x <- navbarLeftMenuItems, menuItemAccessCallback x]
-        let navbarRightFilteredMenuItems = [x | x <- navbarRightMenuItems, menuItemAccessCallback x]
+        let navbarLeftVisibleMenuItems =
+                filter menuItemShowWhen navbarLeftMenuItems
+            navbarRightVisibleMenuItems =
+                filter menuItemShowWhen navbarRightMenuItems
 
         -- We break up the default layout into two components:
         -- default-layout is the contents of the body tag, and
