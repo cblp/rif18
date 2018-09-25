@@ -69,7 +69,7 @@
 
 #### Kaspersky&nbsp;Secure&nbsp;Hypervisor
 
-Фактически KOS, но внутри процессов запущены паравиртуалки с Windows, Linux и т. п.
+KOS, внутри которой запущены паравиртуалки с Windows, Linux и т. п.
 
 ### Почему мы выбрали Haskell
 
