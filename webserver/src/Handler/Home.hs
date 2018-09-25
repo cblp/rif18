@@ -1,13 +1,13 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE NoImplicitPrelude     #-}
-{-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE TemplateHaskell       #-}
-{-# LANGUAGE TypeFamilies          #-}
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TypeFamilies #-}
 
 module Handler.Home where
 
 import           Import
-import           Text.Julius           (RawJS (..))
+import           Text.Julius (RawJS (..))
 import           Yesod.Form.Bootstrap3 (BootstrapFormLayout (..),
                                         renderBootstrap3)
 
