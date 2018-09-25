@@ -44,10 +44,6 @@ data MenuItem = MenuItem
     , menuItemShowWhen :: Bool
     }
 
-data MenuTypes
-    = NavbarLeft MenuItem
-    | NavbarRight MenuItem
-
 -- This is where we define all of the routes in our application. For a full
 -- explanation of the syntax, please see:
 -- http://www.yesodweb.com/book/routing-and-handlers
@@ -107,36 +103,33 @@ instance Yesod App where
         (title, parents) <- breadcrumbs
 
         -- Define the menu items of the header.
-        let menuItems =
-                [ NavbarLeft $ MenuItem
+        let navbarLeftMenu =
+                [ MenuItem
                     { menuItemLabel = "Home"
                     , menuItemRoute = HomeR
                     , menuItemShowWhen = True
                     }
-                , NavbarLeft $ MenuItem
+                , MenuItem
                     { menuItemLabel = "Profile"
                     , menuItemRoute = ProfileR
                     , menuItemShowWhen = isJust muser
                     }
-                , NavbarRight $ MenuItem
+                ]
+            navbarRightMenu =
+                [ MenuItem
                     { menuItemLabel = "Login"
                     , menuItemRoute = AuthR LoginR
                     , menuItemShowWhen = isNothing muser
                     }
-                , NavbarRight $ MenuItem
+                , MenuItem
                     { menuItemLabel = "Logout"
                     , menuItemRoute = AuthR LogoutR
                     , menuItemShowWhen = isJust muser
                     }
                 ]
 
-        let navbarLeftMenuItems  = [x | NavbarLeft  x <- menuItems]
-            navbarRightMenuItems = [x | NavbarRight x <- menuItems]
-
-        let navbarLeftVisibleMenuItems =
-                filter menuItemShowWhen navbarLeftMenuItems
-            navbarRightVisibleMenuItems =
-                filter menuItemShowWhen navbarRightMenuItems
+        let navbarLeftVisibleMenu  = filter menuItemShowWhen navbarLeftMenu
+            navbarRightVisibleMenu = filter menuItemShowWhen navbarRightMenu
 
         -- We break up the default layout into two components:
         -- default-layout is the contents of the body tag, and
