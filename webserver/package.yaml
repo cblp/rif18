@@ -46,6 +46,10 @@ dependencies:
 - wai
 - foreign-store
 
+extra-source-files:
+- config/*
+- templates/*
+
 # The library contains all of our application code. The executable
 # defined below is just a thin wrapper.
 library:
