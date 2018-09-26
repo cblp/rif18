@@ -1,4 +1,4 @@
-# ![Haskell](/home/cblp/dev/rif18/images/haskell-logo.png)
+# ![Haskell](images/haskell-logo.png)
 # @ ![Лаборатория Касперского](images/Kaspersky.png)
 
 Вопросы можно задавать с места в любое время. Ссылка на этот документ — **[bit.ly/rif-18](https://bit.ly/rif-18)**.
