@@ -1,0 +1,9 @@
+<div .ui.container>
+
+    <h1>
+        Suspicious users
+
+    <ol>
+        $forall user <- users
+            <li>
+                #{userIdent user}
