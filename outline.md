@@ -70,7 +70,7 @@
 
 ## Что мы делаем в ЛК
 
-### ![KasperskyOS](images/product-os-1.png) ![KSS on Linux](images/product-kssl-1.png) ![KSH](images/product-ksh-1.png) ![IoT](images/KL-IoT-Security.png)
+### ![KasperskyOS](images/product-os-2.png)![KSS on Linux](images/product-kssl-2.png)![KSH](images/product-ksh-2.png)![IoT](images/KL-IoT-Security-2.png)
 ### [**os**.kaspersky.com](https://os.kaspersky.com)&nbsp;— Kaspersky&nbsp;Security&nbsp;System&nbsp;(KSS), KasperskyOS, Kaspersky&nbsp;Secure&nbsp;Hypervisor, Kaspersky&nbsp;IoT&nbsp;Secure&nbsp;Gateway
 
 #### Kaspersky Security System (KSS)
