@@ -153,16 +153,16 @@ instance Yesod App where
         -> Bool       -- ^ Whether or not this is a "write" request.
         -> Handler AuthResult
     -- Routes not requiring authentication.
-    isAuthorized (AuthR _) _ = return Authorized
-    isAuthorized CommentR _ = return Authorized
-    isAuthorized HomeR _ = return Authorized
-    isAuthorized FaviconR _ = return Authorized
-    isAuthorized RobotsR _ = return Authorized
-    isAuthorized (StaticR _) _ = return Authorized
+    isAuthorized (AuthR _)   _ = pure Authorized
+    isAuthorized CommentR    _ = pure Authorized
+    isAuthorized HomeR       _ = pure Authorized
+    isAuthorized FaviconR    _ = pure Authorized
+    isAuthorized RobotsR     _ = pure Authorized
+    isAuthorized (StaticR _) _ = pure Authorized
 
     -- the profile route requires that the user is authenticated, so we
     -- delegate to that function
-    isAuthorized ProfileR _ = isAuthenticated
+    isAuthorized ProfileR    _ = isAuthenticated
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows
@@ -192,13 +192,13 @@ instance Yesod App where
     -- in development, and warnings and errors in production.
     shouldLogIO :: App -> LogSource -> LogLevel -> IO Bool
     shouldLogIO app _source level =
-        return $
-        appShouldLogAll (appSettings app)
+        pure
+            $  appShouldLogAll (appSettings app)
             || level == LevelWarn
             || level == LevelError
 
     makeLogger :: App -> IO Logger
-    makeLogger = return . appLogger
+    makeLogger = pure . appLogger
 
 -- Define breadcrumbs.
 instance YesodBreadcrumbs App where
@@ -208,10 +208,10 @@ instance YesodBreadcrumbs App where
     breadcrumb
         :: Route App  -- ^ The route the user is visiting currently.
         -> Handler (Text, Maybe (Route App))
-    breadcrumb HomeR = return ("Home", Nothing)
-    breadcrumb (AuthR _) = return ("Login", Just HomeR)
-    breadcrumb ProfileR = return ("Profile", Just HomeR)
-    breadcrumb  _ = return ("home", Nothing)
+    breadcrumb HomeR     = pure ("Home",    Nothing)
+    breadcrumb (AuthR _) = pure ("Login",   Just HomeR)
+    breadcrumb ProfileR  = pure ("Profile", Just HomeR)
+    breadcrumb _         = pure ("home",    Nothing)
 
 -- How to run database actions.
 instance YesodPersist App where
@@ -243,7 +243,7 @@ instance YesodAuth App where
     authenticate creds = liftHandler $ runDB $ do
         x <- getBy $ UniqueUser $ credsIdent creds
         case x of
-            Just (Entity uid _) -> return $ Authenticated uid
+            Just (Entity uid _) -> pure $ Authenticated uid
             Nothing -> Authenticated <$> insert User
                 { userIdent = credsIdent creds
                 , userPassword = Nothing
@@ -259,7 +259,7 @@ instance YesodAuth App where
 isAuthenticated :: Handler AuthResult
 isAuthenticated = do
     muid <- maybeAuthId
-    return $ case muid of
+    pure $ case muid of
         Nothing -> Unauthorized "You must login to access this page"
         Just _ -> Authorized
 
