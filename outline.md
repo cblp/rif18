@@ -494,6 +494,8 @@ int main() {
 
 Проверим-ка! (файл «`weaktypes.cpp`»)
 
+Теперь то же самое на Haskell:
+
 ```haskell
 import Data.Word
 
