@@ -62,12 +62,15 @@
 
 ## Сообщество RuHaskell
 
+### ![RuHaskell](images/ruHaskell-logo.png)
+
 1. [**RuHaskell**.org](https://ruhaskell.org)
 
 2. [t.me/**haskellru**](https://t.me/haskellru)
 
 ## Что мы делаем в ЛК
 
+### ![KasperskyOS](images/product-os-1.png) ![KSS on Linux](images/product-kssl-1.png) ![KSH](images/product-ksh-1.png) ![IoT](images/KL-IoT-Security.png)
 ### [**os**.kaspersky.com](https://os.kaspersky.com)&nbsp;— Kaspersky&nbsp;Security&nbsp;System&nbsp;(KSS), KasperskyOS, Kaspersky&nbsp;Secure&nbsp;Hypervisor, Kaspersky&nbsp;IoT&nbsp;Secure&nbsp;Gateway
 
 #### Kaspersky Security System (KSS)
@@ -101,6 +104,8 @@ KOS, внутри которой запущены паравиртуалки с 
 5. Библиотеки для парсеров, компиляторов, кодогенерации
 
 ## Опрос-зарядка. Знаете ли вы _?
+
+(То есть вы знаете, что это такое, и можете примерно объяснить)
 
 1. λ-исчисление
 2. λ-абстракция (безымянная функция как выражение)
