@@ -11,7 +11,7 @@
    brew install haskell-stack
    ```
 
-2. Установить дополнительные инструменты (не обязательно)
+2. Установить дополнительные инструменты (не обязательно, но желательно)
 
    ```sh
    stack install yesod-bin
@@ -22,9 +22,20 @@
    ```sh
    git clone https://github.com/cblp/rif18.git
    cd rif18/webserver
-   stack build
-   stack exec webserver
    ```
+
+   1. Если установлен `yesod-bin`,
+
+      ```sh
+      yesod devel
+      ```
+
+   2. Если только `stack`,
+
+      ```sh
+      stack build --file-watch
+      stack exec webserver
+      ```
 
 4. Потыкать палочкой [localhost:3000](http://localhost:3000)
 
