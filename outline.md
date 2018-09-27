@@ -1,7 +1,9 @@
 # ![Haskell](images/haskell-logo.png)
 # @ ![Лаборатория Касперского](images/Kaspersky.png)
 
-Вопросы можно задавать с места в любое время. Ссылка на этот документ — **[bit.ly/rif-18](https://bit.ly/rif-18)**.
+Вопросы можно задавать с места в любое время. Жду минимум 2 вопроса от каждого.
+
+Ссылка на этот документ — **[bit.ly/rif-18](https://bit.ly/rif-18)**.
 
 ## Подготовка
 
@@ -11,7 +13,7 @@
    brew install haskell-stack
    ```
 
-2. Установить дополнительные инструменты (не обязательно, но желательно)
+2. Установить дополнительные инструменты
 
    ```sh
    stack install yesod-bin
@@ -22,20 +24,8 @@
    ```sh
    git clone https://github.com/cblp/rif18.git
    cd rif18/webserver
+   yesod devel
    ```
-
-   1. Если установлен `yesod-bin`,
-
-      ```sh
-      yesod devel
-      ```
-
-   2. Если только `stack`,
-
-      ```sh
-      stack build --file-watch
-      stack exec webserver
-      ```
 
 4. Потыкать палочкой [localhost:3000](http://localhost:3000)
 
@@ -60,7 +50,6 @@
    - Теория категорий
 2. Развенчания мифов
    - Haskell — это сложно
-   - Ленивость мешает
    - На Haskell нет работы
    - На Haskell нельзя писать реальные программы
 
@@ -138,6 +127,8 @@ KOS, внутри которой запущены паравиртуалки с 
 
 # λ-исчисление
 
+> *Одно кольцо, чтоб править всеми...*
+
 ## переменная
 
 ```haskell
@@ -191,16 +182,33 @@ integral
 ## абстракция (функция)
 
 ```haskell
-square x = mul x x
+-- математика
+x² = x · x
 
-square y = mul y y
+// C, C++, Java
+int square(int x) {
+    return x * x;
+}
+
+# Python
+def square(x):
+	return x * x
+
+-- Haskell
+square x = x * x
 
 ...
 ```
 
-# Haskell
+# :medal_sports: Новый навык: λ-исчисление
 
-## Базовый синтаксис
+# :medal_sports: Новый навык: Синтаксис Haskell (уровень 1)
+
+------
+
+## :computer: GHCi
+
+# Синтаксис Haskell подробнее
 
 ### аппликация
 
